@@ -6,57 +6,25 @@ get("/") do
 end
 
 
-get("/rock") do
+get("/rps/:hand") do
+  @hand = params.fetch("hand")
+
   moves = ["rock", "paper", "scissors"]
 
   @comp_move = moves.sample
 
-  if @comp_move == "rock"
-    @outcome = "tied"
-  elsif @comp_move == "paper"
+  if !["rock", "paper", "scissors"].include?(@hand) 
+    @outcome = "lost. Our move was not valid!"
+  elsif @comp_move == @hand
+      @outcome = "tied"
+  elsif (@comp_move == "paper" and @hand == "rock") || (@comp_move == "scissors" and @hand == "paper") || (@comp_move == "rock" and @hand == "scissors")
     @outcome = "lost"
   else 
     @outcome = "won"
   end 
 
-  erb(:rock)
+  erb(:flexible)
 
 end 
 
 
-get("/paper") do
-  moves = ["rock", "paper", "scissors"]
-
-  @comp_move = moves.sample
-
-  if @comp_move == "paper"
-    @outcome = "tied"
-  elsif @comp_move == "scissors"
-    @outcome = "lost"
-  else 
-    @outcome = "won"
-  end 
-
-  erb(:paper)
-
-end 
-  
-
-
-get("/scissors") do
-  moves = ["rock", "paper", "scissors"]
-
-  @comp_move = moves.sample
-
-  if @comp_move == "scissors"
-    @outcome = "tied"
-  elsif @comp_move == "rock"
-    @outcome = "lost"
-  else 
-    @outcome = "won"
-  end 
-
-  erb(:scissors)
-
-end 
-  
